@@ -1,5 +1,9 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/umurinzi/public_html/prod/
-    - /bin/cp -r * $DEPLOYPATH
+    - export PATH=$HOME/go/bin:$PATH
+    - echo "Building Go app..."
+    - go mod tidy
+    - go build -o myapp main.go
+    - echo "Deploying..."
+    - cp myapp ~/public_html/prod/
