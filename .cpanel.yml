@@ -2,7 +2,10 @@
 deployment:
   tasks:
     - export GOPATH=$HOME/go
-    - export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
-    - cd $GIT_REPO
-    - go build -o myapp main.go
-    - cp myapp ~/public_html/
+    - export PATH=$GOPATH/bin:$PATH
+    - /opt/cpanel/ea-nodejs18/bin/npm install -g serve || true  # workaround for PATH issues
+    - cd $DEPLOYMENT_SOURCE
+    - go mod tidy
+    - go build -o app
+    - pkill app || true
+    - nohup ./app > output.log 2>&1 &
